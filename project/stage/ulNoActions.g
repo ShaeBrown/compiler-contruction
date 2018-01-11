@@ -42,8 +42,11 @@ function: functionDecl functionBody
 functionDecl: compoundType identifier '(' formalParameters ')'
 	;
 
-formalParameters: compoundType identifier
+formalParameters: compoundType identifier moreFormals*
     |
+    ;
+
+moreFormals:  ',' compoundType identifier
     ;
 
 functionBody: '{' varDecl* statement* '}'
@@ -52,50 +55,36 @@ functionBody: '{' varDecl* statement* '}'
 varDecl: compoundType identifier ';'
     ;
 
-identifier : ID
-	;
-
 compoundType: TYPE
             | TYPE '['INT']'
 	;
 
-statement:  ';'
-         |  expr ';'
+statement:  expr ';'
          |  IF '(' expr ')' block ('else' block)?
          | 'while' '(' expr ')' block
          | 'print' expr ';'
          | 'println' expr ';'
          | 'return' expr? ';'
-         /*
-         reachable by 2
-         | identifier ('[' expr ']')? '=' expr ';'
-         */
+         | identifier '=' expr ';'
+         | ';'
          ;
 
 block: '{' statement* '}'
     ;
 
-/*
-Left-recursive solution
-expr:   expr OP expr
-      | identifier '[' expr ']'
-      | identifier '(' exprList ')'
-      | identifier
-      | literal
-      | '(' expr ')'
-      ;
-*/
-
-expr:  identifier '[' expr ']' exprPrime
-     | identifier '(' exprList ')' exprPrime
-     | identifier exprPrime
-     | literal exprPrime
-     | '(' expr ')' exprPrime
+expr:  arr ('=' expr | binaryOP)
+     | identifier '(' exprList ')' binaryOP
+     | identifier binaryOP
+     | literal binaryOP
+     | '(' expr ')' binaryOP
      ;
 
-exprPrime: OP expr exprPrime
-           |
-           ;
+arr : identifier '[' expr ']'
+    ;
+
+binaryOP: operator expr binaryOP
+        |
+        ;
 
 exprList: expr exprMore*
         |
@@ -103,7 +92,14 @@ exprList: expr exprMore*
 
 exprMore: ',' expr;
 
+
 literal : INT | STRING | CHAR | FLOAT | 'true' | 'false'
+    ;
+
+identifier : ID
+	;
+
+operator: OP
     ;
 
 /* Lexer */
