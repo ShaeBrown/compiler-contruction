@@ -125,7 +125,7 @@ STRING : '"'(VALID_CHAR|' ')*'"'
 CHAR: '\''(VALID_CHAR|' ')'\''
     ;
 
-FLOAT: NONZERO_DIGIT DIGIT* '.' DIGIT*
+FLOAT: DIGIT+ '.' DIGIT+
     ;
 
 fragment DIGIT: ('0'..'9');
