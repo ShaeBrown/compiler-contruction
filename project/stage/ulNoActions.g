@@ -33,64 +33,102 @@ public void recoverFromMismatchedSet (IntStream input,
  *  - change functionBody to include variable declarations and statements 
  */
 
-program : function+ 
+program : 
+	function+ 
 	;
 
-function: functionDecl functionBody
+function: 
+	functionDecl functionBody
 	;
 
-functionDecl: compoundType identifier '(' formalParameters ')'
+functionDecl: 
+	compoundType identifier '(' formalParameters ')'
 	;
 
-formalParameters: compoundType identifier moreFormals*
+formalParameters: 
+	compoundType identifier moreFormals*
     |
     ;
 
-moreFormals:  ',' compoundType identifier
+moreFormals:  
+	',' compoundType identifier
     ;
 
-functionBody: '{' varDecl* statement* '}'
+functionBody: 
+	'{' varDecl* statement* '}'
 	;
 
-varDecl: compoundType identifier ';'
+varDecl: 
+	compoundType identifier ';'
     ;
 
-compoundType: TYPE
-            | TYPE '['INT']'
+compoundType: 
+	TYPE
+	| TYPE '['INT']'
 	;
 
-statement:  expr ';'
-         |  IF '(' expr ')' block ('else' block)?
-         | 'while' '(' expr ')' block
-         | 'print' expr ';'
-         | 'println' expr ';'
-         | 'return' expr? ';'
-         | identifier '=' expr ';'
-         | ';'
-         ;
+statement options {backtrack = true; }:  
+	expr ';'
+	| IF '(' expr ')' block (ELSE block)?
+	| 'while' '(' expr ')' block
+	| 'print' expr ';'
+	| 'println' expr ';'
+	| 'return' expr? ';'
+	| identifier '=' expr ';'
+	| arr  '=' expr ';'
+	| ';'
+  ;
 
-block: '{' statement* '}'
+block: 
+	'{' statement* '}'
     ;
 
-expr:  arr ('=' expr | binaryOP)
-     | identifier '(' exprList ')' binaryOP
-     | identifier binaryOP
-     | literal binaryOP
-     | '(' expr ')' binaryOP
+atom options {backtrack = true; }: 
+	arr
+	| identifier '(' exprList ')'
+	| identifier
+	| literal
+	| '(' expr ')'
+   ;
+	
+expr : 
+	atom equalsExpr
      ;
 
-arr : identifier '[' expr ']'
+arr : 
+	identifier '[' expr ']'
     ;
 
-binaryOP: operator expr binaryOP
-        |
-        ;
+equalsExpr : 
+	'==' compExpr equalsExpr
+	| compExpr
+	|
+	;
 
-exprList: expr exprMore*
-        |
-        ;
+compExpr : 
+	'<' addSubExpr compExpr
+	| addSubExpr
+	|
+	;
 
-exprMore: ',' expr;
+addSubExpr: ('+'|'-') multiExpr addSubExpr
+	| multiExpr
+	|
+	;
+	
+multiExpr: '*' atom multiExpr
+	| atom
+	|
+	;
+
+exprList: 
+	expr exprMore*
+	|
+	;
+
+exprMore: 
+	',' expr
+	;
 
 
 literal : INT | STRING | CHAR | FLOAT | 'true' | 'false'
@@ -99,19 +137,16 @@ literal : INT | STRING | CHAR | FLOAT | 'true' | 'false'
 identifier : ID
 	;
 
-operator: OP
-    ;
-
 /* Lexer */
 	 
 IF	: 'if'
 	;
+	
+ELSE : 'else'
+	;
 
 TYPE: 'int' |  'float' | 'char' | 'string' | 'boolean' | 'void'
 	;
-
-OP  : '==' | '<' | '+' | '-' | '*'
-    ;
 
 ID	: NON_DIGIT VALID_CHAR*
 	;
