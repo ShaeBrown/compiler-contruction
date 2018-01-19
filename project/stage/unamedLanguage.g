@@ -25,11 +25,11 @@ public void recoverFromMismatchedSet (IntStream input,
 }
 
 
-program : 
-	function+ 
+program :
+	function+
 	;
 
-function: 
+function:
 	functionDecl functionBody
 	;
 
@@ -156,7 +156,8 @@ TYPE: 'int' |  'float' | 'char' | 'string' | 'boolean' | 'void'
 ID	: NON_DIGIT VALID_CHAR*
 	;
 
-INT : NONZERO_DIGIT DIGIT*
+INT : NONZERO_DIGIT DIGIT+
+    | DIGIT
     ;
 
 STRING : '"'(VALID_CHAR|' ')*'"'
