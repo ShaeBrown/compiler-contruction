@@ -9,6 +9,7 @@ grammar: $(GSRCS)
 
 compiler:
 	javac *.java
+	javac ASTNodes/*.java
 
 clean:
 	rm *.class $(GNAME)*.java $(GNAME)__.g $(GNAME).tokens

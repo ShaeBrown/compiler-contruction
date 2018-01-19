@@ -1,5 +1,9 @@
 grammar unamedLanguage;
-				
+
+@header {
+	import ASTNodes.*;
+}
+		
 @members
 {
 protected void mismatch (IntStream input, int ttype, BitSet follow)
@@ -25,16 +29,32 @@ public void recoverFromMismatchedSet (IntStream input,
 }
 
 
-program :
-	function+
+program returns [Program prog]
+@init
+{
+	prog = new Program();
+}
+	: 
+	(f=function { prog.addFunction(f);})+ EOF
 	;
 
-function:
-	functionDecl functionBody
-	;
+function returns [Function f]:
+	fd = functionDecl fb=functionBody
+	{ f = new Function(fd,fb); }
+     ;
 
-functionDecl: 
+functionDecl returns [FunctionDecl fd]:
 	compoundType identifier '(' formalParameters ')'
+	{ fd = new FunctionDecl(); }
+	;
+
+functionBody returns [FunctionBody fb]
+@init 
+{
+	fb = new FunctionBody();
+}
+	:
+	'{' (vd=varDecl {fb.addVarDecl(vd);})* (st=statement {fb.addStatement(st);})* '}'
 	;
 
 formalParameters: 
@@ -46,12 +66,10 @@ moreFormals:
 	',' compoundType identifier
     ;
 
-functionBody: 
-	'{' varDecl* statement* '}'
-	;
 
-varDecl: 
+varDecl returns [VariableDeclaration vd]:
 	compoundType identifier ';'
+	{ vd = new VariableDeclaration(); }
     ;
 
 compoundType: 
@@ -63,7 +81,7 @@ arr :
 	identifier '[' expr ']'
     ;
 
-statement options {backtrack = true;}:
+statement returns [Statement st] options {backtrack = true;}:
 	expr ';'
 	| IF '(' expr ')' block (ELSE block)?
 	| 'while' '(' expr ')' block
@@ -73,6 +91,7 @@ statement options {backtrack = true;}:
 	| identifier '=' expr ';'
 	| arr  '=' expr ';'
 	| ';'
+	{ st = new Statement(); }
   ;
 
 block: 
