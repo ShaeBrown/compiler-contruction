@@ -6,7 +6,9 @@ int foo (int x, float y, string z, char c, boolean a) {
 	int	xx;
 
 	while (x < 10) {
-		;
+		if (zz == yy) {
+			;
+		}
 	}
 
 	if (zz == "abc") {

@@ -1,4 +1,5 @@
 package ASTNodes;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Program {
     public int size () {
         return functionList.size();
     }
-//    public void accept (Visitor v) {
-//        v.visit(this);
-//    }
+    public void accept (Visitor v) {
+        v.visit(this);
+    }
 }

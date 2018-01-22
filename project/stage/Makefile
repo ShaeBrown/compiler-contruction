@@ -12,7 +12,7 @@ compiler:
 	javac ASTNodes/*.java
 
 clean:
-	rm *.class $(GNAME)*.java $(GNAME)__.g $(GNAME).tokens
+	rm *.class $(GNAME)*.java $(GNAME)__.g $(GNAME).tokens ASTNodes/*.class
 
 
  

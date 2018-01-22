@@ -1,5 +1,5 @@
 package ASTNodes;
 
-public class Statement {
-
+public interface Statement {
+    public void accept(Visitor v);
 }

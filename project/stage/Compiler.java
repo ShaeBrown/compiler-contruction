@@ -5,6 +5,7 @@
  *
  */
 
+import ASTNodes.*;
 import org.antlr.runtime.*;
 import java.io.*;
 
@@ -27,7 +28,9 @@ public class Compiler {
 		unamedLanguageParser parser = new unamedLanguageParser(tokens);
 
 		try {
-			parser.program();
+			Program p = parser.program();
+                        Visitor v = new PrintVisitor();
+                        p.accept(v);
 		}
 		catch (RecognitionException e )	{
 			// A lexical or parsing error occured.
