@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class CompareExpression implements Expression {
+public class CompareExpression extends Expression {
     AddSubExpression addSubExpr;
     CompareExpression primeExpr;
 
@@ -20,6 +20,11 @@ public class CompareExpression implements Expression {
     
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

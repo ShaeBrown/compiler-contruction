@@ -9,13 +9,18 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class StringLiteral implements Literal {
+public class StringLiteral extends Literal {
     String s;
     public StringLiteral(String s) {
         this.s = s;
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

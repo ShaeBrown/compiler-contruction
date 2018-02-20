@@ -9,11 +9,16 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class EmptyStatement implements Statement {
+public class EmptyStatement extends Statement {
 
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @author shaebrown
  */
 
-public class Block {
+public class Block extends ASTNode {
     List<Statement> statements;
     public Block() {
         this.statements = new ArrayList<>();
@@ -23,5 +23,10 @@ public class Block {
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

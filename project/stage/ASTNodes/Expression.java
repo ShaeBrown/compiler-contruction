@@ -9,6 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public interface Expression {
-    public void accept(Visitor v);
+public abstract class Expression extends ASTNode {
+
+    public abstract void accept(Visitor v);
 }

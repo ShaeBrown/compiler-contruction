@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class FunctionCallAtom implements Atom {
+public class FunctionCallAtom extends Atom {
     Identifier i;
     ExpressionList exprs;
     public FunctionCallAtom(Identifier i, ExpressionList exprList) {
@@ -18,5 +18,10 @@ public class FunctionCallAtom implements Atom {
     } 
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

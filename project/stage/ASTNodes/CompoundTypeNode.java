@@ -3,6 +3,11 @@
  */
 package ASTNodes;
 
-public interface CompoundTypeNode {
-    public void accept(Visitor v);
+public abstract class CompoundTypeNode extends ASTNode {
+    public abstract void accept(Visitor v);
+    public abstract Type getType();
+    public boolean isArrayType() {
+        return this instanceof ArrayTypeNode;
+    }
+    
 }

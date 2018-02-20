@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class CharLiteral implements Literal {
+public class CharLiteral extends Literal {
     char c;
 
     public CharLiteral(char c) {
@@ -18,5 +18,10 @@ public class CharLiteral implements Literal {
     
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

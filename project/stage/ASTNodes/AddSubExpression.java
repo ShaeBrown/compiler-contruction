@@ -8,10 +8,15 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class AddSubExpression implements Expression {
+public class AddSubExpression extends Expression {
     MultiExpression multiExpr;
     AddSubExpression primeExpr;
 
+    /**
+     *
+     * @param multiExpr
+     * @param primeExpr
+     */
     public AddSubExpression(MultiExpression multiExpr, AddSubExpression primeExpr) {
         this.multiExpr = multiExpr;
         this.primeExpr = primeExpr;
@@ -20,6 +25,11 @@ public class AddSubExpression implements Expression {
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

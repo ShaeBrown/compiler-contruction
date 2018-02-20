@@ -10,20 +10,21 @@ package ASTNodes;
  * @author shaebrown
  */
 public class PrintVisitor implements Visitor {
-
+    int indent = 0;
     @Override
     public void visit(AddExpression expr) {
-        System.out.print(" + ");
+        System.out.print("+");
         expr.multiExpr.accept(this);
         if (expr.primeExpr != null) {
-            expr.accept(this);
+            expr.primeExpr.accept(this);
         }
     }
 
     @Override
     public void visit(ArrayAssignmentStatement expr) {
+        indent();
         expr.arr.accept(this);
-        System.out.print(" = ");
+        System.out.print("=");
         expr.expr.accept(this);
         System.out.println(";");
     }
@@ -46,21 +47,24 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(AssignmentStatement expr) {
+        indent();
         expr.i.accept(this);
-        System.out.print(" = ");
+        System.out.print("=");
         expr.expr.accept(this);
         System.out.println(";");
     }
 
     @Override
     public void visit(Block expr) {
-        //TODO: Indent properly
-        System.out.println("    {");
+        indent();
+        System.out.println("{");
         for (Statement s : expr.statements) {
-            System.out.print("        ");
+            indent++;
             s.accept(this);
+            indent--;
         }
-        System.out.println("    }");
+        indent();
+        System.out.println("}");
     }
 
     @Override
@@ -79,7 +83,7 @@ public class PrintVisitor implements Visitor {
     public void visit(CompareExpression expr) {
         expr.addSubExpr.accept(this);
         if (expr.primeExpr != null) {
-            System.out.print(" < ");
+            System.out.print("<");
             expr.primeExpr.accept(this);
         }
     }
@@ -88,13 +92,14 @@ public class PrintVisitor implements Visitor {
     public void visit(EqualsExpression expr) {
         expr.compExpr.accept(this);
         if (expr.primeExpr != null) {
-            System.out.print(" == ");
+            System.out.print("==");
             expr.primeExpr.accept(this);
         }
     }
 
     @Override
     public void visit(EmptyStatement e) {
+        indent();
         System.out.println(";");
     }
 
@@ -103,7 +108,7 @@ public class PrintVisitor implements Visitor {
         if (expr.exprList.size() > 0) {
             expr.exprList.get(0).accept(this);
             for (Expression e : expr.exprList.subList(1, expr.exprList.size())) {
-                System.out.print(", ");
+                System.out.print(",");
                 e.accept(this);
             }
         }
@@ -111,6 +116,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(ExpressionStatement expr) {
+        indent();
         expr.e.accept(this);
         System.out.println(";");
     }
@@ -143,18 +149,21 @@ public class PrintVisitor implements Visitor {
         expr.funcDecl.accept(this);
         System.out.println();
         System.out.println("{");
+        indent++;
         expr.funcBody.accept(this);
+        indent--;
         System.out.println("}");
     }
 
     @Override
     public void visit(FunctionBody expr) {
         for (VariableDeclaration v : expr.varDecls) {
-            System.out.print("    ");
             v.accept(this);
         }
+        if (expr.varDecls.size() > 0) {
+            System.out.println();
+        }
         for (Statement s : expr.statements) {
-            System.out.print("    ");
             s.accept(this);
         }
     }
@@ -176,12 +185,14 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(IfStatement expr) {
+        indent();
         System.out.print("if (");
         expr.ifExpr.accept(this);
         System.out.println(")");
         expr.thenBlock.accept(this);
         if (expr.elseBlock != null) {
-            System.out.println("    else");
+            indent();
+            System.out.println("else");
             expr.elseBlock.accept(this);
         }
     }
@@ -195,7 +206,7 @@ public class PrintVisitor implements Visitor {
     public void visit(MultiExpression expr) {
         expr.a.accept(this);
         if (expr.expr != null) {
-            System.out.print(" * ");
+            System.out.print("*");
             expr.expr.accept(this);
         }
     }
@@ -210,6 +221,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(PrintStatement expr) {
+        indent();
         System.out.print("print ");
         expr.e.accept(this);
         System.out.println(";");
@@ -217,6 +229,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(PrintlnStatement expr) {
+        indent();
         System.out.print("println ");
         expr.expr.accept(this);
         System.out.println(";");
@@ -232,6 +245,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(ReturnStatement expr) {
+        indent();
         System.out.print("return");
         if (expr.expr != null) {
             System.out.print(" ");
@@ -249,7 +263,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(SubExpression expr) {
-        System.out.print(" - ");
+        System.out.print("-");
         expr.multiExpr.accept(this);
         if (expr.primeExpr != null) {
             expr.primeExpr.accept(this);
@@ -284,6 +298,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(VariableDeclaration expr) {
+        indent();
         expr.ct.accept(this);
         System.out.print(" ");
         expr.id.accept(this);
@@ -292,6 +307,7 @@ public class PrintVisitor implements Visitor {
 
     @Override
     public void visit(WhileStatement expr) {
+        indent();
         System.out.print("while (");
         expr.expr.accept(this);
         System.out.println(")");
@@ -311,5 +327,11 @@ public class PrintVisitor implements Visitor {
         System.out.print("(");
         expr.expr.accept(this);
         System.out.print(")");
+    }
+    
+    private void indent() {
+        for (int i = 0; i < indent; i++) {
+            System.out.print("    ");
+        }
     }
 }

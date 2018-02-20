@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,7 +10,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class IntegerLiteral implements Literal {
+public class IntegerLiteral extends Literal {
     int lit;
     public IntegerLiteral(int lit) {
         this.lit = lit;
@@ -17,6 +18,11 @@ public class IntegerLiteral implements Literal {
     
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

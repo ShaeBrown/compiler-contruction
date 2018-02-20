@@ -3,7 +3,7 @@ package ASTNodes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionBody {
+public class FunctionBody extends ASTNode {
 
     List<VariableDeclaration> varDecls;
     List<Statement> statements;
@@ -23,5 +23,10 @@ public class FunctionBody {
 
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

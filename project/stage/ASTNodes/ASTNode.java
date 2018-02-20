@@ -9,6 +9,6 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class ASTNode {
-
+public abstract class ASTNode {
+    public abstract int getLineNum();
 }

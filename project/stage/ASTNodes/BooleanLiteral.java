@@ -9,12 +9,17 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class BooleanLiteral implements Literal{
+public class BooleanLiteral extends Literal {
     boolean lit;
     public BooleanLiteral(boolean lit) {
         this.lit = lit;
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

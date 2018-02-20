@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class ArrayReference implements Atom {
+public class ArrayReference extends Atom {
     Identifier i;
     Expression e;
     public ArrayReference(Identifier i, Expression e) {
@@ -19,5 +19,10 @@ public class ArrayReference implements Atom {
     
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class ExpressionStatement implements Statement{
+public class ExpressionStatement extends Statement{
     Expression e;
 
     public ExpressionStatement(Expression e) {
@@ -18,6 +18,11 @@ public class ExpressionStatement implements Statement{
     
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

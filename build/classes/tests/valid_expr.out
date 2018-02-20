@@ -1,0 +1,28 @@
+int goo (float f, int x)
+{
+    (5*2)==(3*5);
+    if (x*12==y)
+    {
+        x=x+1;
+    }
+    if (v==0)
+    {
+        ;
+    }
+    else
+    {
+        op='x';
+    }
+    while (x<0)
+    {
+        println "hello";
+    }
+    print "fksodkf";
+    print x*12<20;
+    return;
+    return 4-2*9+0<x;
+    x=5;
+    b=true;
+    p[9]="jjj";
+}
+

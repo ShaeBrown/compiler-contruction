@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class AssignmentStatement implements Statement {
+public class AssignmentStatement extends Statement {
     Identifier i;
     Expression expr;
     public AssignmentStatement(Identifier i, Expression e) {
@@ -18,6 +18,11 @@ public class AssignmentStatement implements Statement {
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

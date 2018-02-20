@@ -1,5 +1,5 @@
 package ASTNodes;
 
-public interface Statement {
-    public void accept(Visitor v);
+public abstract class Statement extends ASTNode {
+    public abstract void accept(Visitor v);
 }

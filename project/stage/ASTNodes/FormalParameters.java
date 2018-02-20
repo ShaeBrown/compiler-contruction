@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author shaebrown
  */
-public class FormalParameters {
+public class FormalParameters extends ASTNode {
     List<FormalParameter> params;
 
     public FormalParameters() {
@@ -24,6 +24,11 @@ public class FormalParameters {
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

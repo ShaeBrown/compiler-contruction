@@ -9,7 +9,8 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public interface Literal extends Atom {
+public abstract class Literal extends Atom {
+    
     @Override
-    public void accept(Visitor v);
+    public abstract void accept(Visitor v);
 }

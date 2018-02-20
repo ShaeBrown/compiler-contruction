@@ -9,7 +9,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class ParenAtom implements Atom {
+public class ParenAtom extends Atom {
     Expression expr;
 
     public ParenAtom(Expression expr) {
@@ -19,6 +19,11 @@ public class ParenAtom implements Atom {
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

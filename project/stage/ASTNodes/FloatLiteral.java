@@ -9,12 +9,17 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class FloatLiteral implements Literal {
+public class FloatLiteral extends Literal {
     float f;
     public FloatLiteral(float f) {
         this.f = f;
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

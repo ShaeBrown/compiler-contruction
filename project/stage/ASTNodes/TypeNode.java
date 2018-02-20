@@ -3,7 +3,7 @@
  */
 package ASTNodes;
 
-public class TypeNode implements CompoundTypeNode {
+public class TypeNode extends CompoundTypeNode {
     Type t;
     public TypeNode(Type t) {
         this.t = t;
@@ -11,5 +11,15 @@ public class TypeNode implements CompoundTypeNode {
     @Override
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Type getType() {
+        return t;
     }
 }

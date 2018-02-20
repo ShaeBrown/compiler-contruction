@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author shaebrown
  */
-public class ExpressionList {
+public class ExpressionList extends ASTNode {
     List<Expression> exprList;
     public ExpressionList() {
         exprList = new ArrayList<>();
@@ -22,5 +22,10 @@ public class ExpressionList {
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

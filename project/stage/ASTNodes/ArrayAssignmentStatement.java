@@ -1,7 +1,7 @@
 package ASTNodes;
 
 
-public class ArrayAssignmentStatement implements Statement {
+public class ArrayAssignmentStatement extends Statement {
     ArrayReference arr;
     Expression expr;
     public ArrayAssignmentStatement(ArrayReference arr, Expression expr) {
@@ -10,5 +10,10 @@ public class ArrayAssignmentStatement implements Statement {
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

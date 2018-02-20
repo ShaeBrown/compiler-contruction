@@ -9,6 +9,6 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public interface Atom {
-    public void accept(Visitor v);
+public abstract class Atom extends ASTNode {    
+    public abstract void accept(Visitor v);
 }

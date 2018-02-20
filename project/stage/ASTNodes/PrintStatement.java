@@ -9,12 +9,17 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class PrintStatement implements Statement {
+public class PrintStatement extends Statement {
     Expression e;
     public PrintStatement(Expression e) {
         this.e = e;
     }
     public void accept(Visitor v) {
         v.visit(this);
+    }
+
+    @Override
+    public int getLineNum() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
