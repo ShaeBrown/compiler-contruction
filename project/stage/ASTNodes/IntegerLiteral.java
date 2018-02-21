@@ -12,8 +12,10 @@ package ASTNodes;
  */
 public class IntegerLiteral extends Literal {
     int lit;
-    public IntegerLiteral(int lit) {
+    int lineNum;
+    public IntegerLiteral(int lineNum, int lit) {
         this.lit = lit;
+        this.lineNum = lineNum;
     }
     
     public void accept(Visitor v) {
@@ -22,7 +24,7 @@ public class IntegerLiteral extends Literal {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.lineNum;
     }
     
 }

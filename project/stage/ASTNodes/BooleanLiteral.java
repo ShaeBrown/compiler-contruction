@@ -11,15 +11,19 @@ package ASTNodes;
  */
 public class BooleanLiteral extends Literal {
     boolean lit;
-    public BooleanLiteral(boolean lit) {
+    int lineNum;
+    
+    public BooleanLiteral(int lineNum, boolean lit) {
         this.lit = lit;
+        this.lineNum = lineNum;
     }
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return lineNum;
     }
 }

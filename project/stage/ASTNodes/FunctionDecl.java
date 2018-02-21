@@ -5,7 +5,7 @@ public class FunctionDecl extends ASTNode {
     Identifier id;
     FormalParameters params;
 
-    public FunctionDecl(CompoundTypeNode ct, Identifier id, FormalParameters params, int lineNum) {
+    public FunctionDecl(CompoundTypeNode ct, Identifier id, FormalParameters params) {
         this.ct = ct;
         this.id = id;
         this.params = params;
@@ -17,6 +17,6 @@ public class FunctionDecl extends ASTNode {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ct.getLineNum();
     }
 }

@@ -11,7 +11,9 @@ package ASTNodes;
  */
 public class FloatLiteral extends Literal {
     float f;
-    public FloatLiteral(float f) {
+    int lineNum;
+    public FloatLiteral(int lineNum, float f) {
+        this.lineNum = lineNum;
         this.f = f;
     }
     public void accept(Visitor v) {
@@ -20,6 +22,6 @@ public class FloatLiteral extends Literal {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.lineNum;
     }
 }

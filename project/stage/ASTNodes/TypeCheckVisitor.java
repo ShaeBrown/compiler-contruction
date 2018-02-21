@@ -104,11 +104,12 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(FormalParameter expr) {
+        System.out.println(expr.id.value);
         if (expr.ct.getType() == Type.VOID) {
-            System.out.println(expr.getLineNum() + ": No parameter may have a “type” of void.");
+            throw new TypeCheckException(expr.getLineNum(), "No parameter may have a “type” of void.");
         }
         if (paramNames.contains(expr.id.value)) {
-                System.out.println(expr.getLineNum() + ": No two parameters of a function may have the same name");
+            throw new TypeCheckException(expr.getLineNum(), "No two parameters of a function may have the same name");
         }
         paramNames.add(expr.id.value);
     }
@@ -145,16 +146,16 @@ public class TypeCheckVisitor implements Visitor {
             hasMain = true;
         }
         if (funcNames.contains(expr.id.value)) {
-            System.out.println(expr.getLineNum() + ": No two functions may have the same name");
-            return;
+            throw new TypeCheckException(expr.getLineNum(), "No two functions may have the same name");
         }
         funcNames.add(expr.id.value);
+        expr.params.accept(this);
     }
 
     @Override
     public void visit(Identifier expr) {
         if (!varName.contains(expr.value)) {
-            System.out.println(expr.getLineNum() + ": Each local variable must be defined before being used.");
+            throw new TypeCheckException(expr.getLineNum(), "Each local variable must be defined before being used.");
         }
     }
 
@@ -197,16 +198,14 @@ public class TypeCheckVisitor implements Visitor {
     @Override
     public void visit(Program expr) {
        if (expr.functionList.isEmpty()){
-           System.out.println(expr.getLineNum() + ": A program must contain at least one function");
-           return;
+           throw new TypeCheckException(expr.getLineNum(), "A program must contain at least one function");
        }
        for (Function f : expr.functionList) {
            f.accept(this);
        }
        if (!hasMain) {
-           System.out.println(expr.getLineNum() + ": One function must be called main, and "
+           throw new TypeCheckException(expr.getLineNum(), "One function must be called main, and "
                    + "must take no parameters, and must have a return “type” of void.");
-           return;
        }
     }
 
@@ -232,15 +231,15 @@ public class TypeCheckVisitor implements Visitor {
     }
 
     @Override
-    public void visit(VariableDeclaration expr) {
+    public void visit(VariableDeclaration expr) throws TypeCheckException {
         if (expr.ct.getType() == Type.VOID) {
-            System.out.println(expr.getLineNum() + ": No local variable may have a “type” of void..");
+            throw new TypeCheckException(expr.getLineNum(), "No local variable may have a “type” of void.");
         }
         if (varName.contains(expr.id.value)) {
-            System.out.println(expr.getLineNum() + ": No two local variables declared in a function may have the same name.");
+            throw new TypeCheckException(expr.getLineNum(), " No two local variables declared in a function may have the same name.");
         }
         if (paramNames.contains(expr.id.value)) {
-            System.out.println(expr.getLineNum() + ": A local variable may not hide the name of a parameter.");
+            throw new TypeCheckException(expr.getLineNum(), "A local variable may not hide the name of a parameter.");
         }
         varName.add(expr.id.value);
     }

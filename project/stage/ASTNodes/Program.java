@@ -17,12 +17,12 @@ public class Program extends ASTNode {
     public int size () {
         return functionList.size();
     }
-    public void accept (Visitor v) {
+    public void accept (Visitor v) throws Exception {
         v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 }

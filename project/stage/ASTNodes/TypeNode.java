@@ -5,8 +5,10 @@ package ASTNodes;
 
 public class TypeNode extends CompoundTypeNode {
     Type t;
-    public TypeNode(Type t) {
+    int lineNum;
+    public TypeNode(int lineNum, Type t) {
         this.t = t;
+        this.lineNum = lineNum;
     }
     @Override
     public void accept(Visitor v) {
@@ -15,7 +17,7 @@ public class TypeNode extends CompoundTypeNode {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return lineNum;
     }
 
     @Override

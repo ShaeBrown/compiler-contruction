@@ -27,6 +27,7 @@ public class Block extends ASTNode {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Empty block: TODO
+        return statements.get(0).getLineNum();
     }
 }

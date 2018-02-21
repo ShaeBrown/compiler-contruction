@@ -11,7 +11,7 @@ package ASTNodes;
  */
 public class ParenAtom extends Atom {
     Expression expr;
-
+    
     public ParenAtom(Expression expr) {
         this.expr = expr;
     }
@@ -23,7 +23,7 @@ public class ParenAtom extends Atom {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return expr.getLineNum();
     }
     
 }

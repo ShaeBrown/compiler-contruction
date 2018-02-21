@@ -1,0 +1,7 @@
+void notmain() {
+	;
+}
+
+void main(int notallowed) {
+	;
+}

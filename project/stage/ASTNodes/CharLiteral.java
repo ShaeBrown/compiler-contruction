@@ -11,8 +11,9 @@ package ASTNodes;
  */
 public class CharLiteral extends Literal {
     char c;
-
-    public CharLiteral(char c) {
+    int lineNum;
+    public CharLiteral(int lineNum, char c) {
+        this.lineNum = lineNum;
         this.c = c;
     }
     
@@ -22,6 +23,6 @@ public class CharLiteral extends Literal {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return lineNum;
     }
 }

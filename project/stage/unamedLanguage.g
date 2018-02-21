@@ -213,12 +213,12 @@ exprMore returns [Expression expr]:
 
 
 literal returns [Literal l]: 
-    i=INT { l = new IntegerLiteral(Integer.parseInt($i.text)); }
-    | s=STRING { l = new StringLiteral($s.text.substring(1, $s.text.length()-1)); }
-    | c=CHAR { l = new CharLiteral($c.text.charAt(1)); }
-    | f=FLOAT { l = new FloatLiteral(Float.parseFloat($f.text)); }
-    | 'true' { l = new BooleanLiteral(true); }
-    | 'false' { l = new BooleanLiteral(false); }
+    i=INT { l = new IntegerLiteral($i.getLine(), Integer.parseInt($i.text)); }
+    | s=STRING { l = new StringLiteral($s.getLine(), $s.text.substring(1, $s.text.length()-1)); }
+    | c=CHAR { l = new CharLiteral($c.getLine(), $c.text.charAt(1)); }
+    | f=FLOAT { l = new FloatLiteral($f.getLine(), Float.parseFloat($f.text)); }
+    | b='true' { l = new BooleanLiteral($b.getLine(), true); }
+    | b='false' { l = new BooleanLiteral($b.getLine(), false); }
     ;
 
 identifier returns [Identifier i]:
@@ -227,12 +227,12 @@ identifier returns [Identifier i]:
 
 
 type returns [TypeNode t]:
-       'int' { t = new TypeNode(Type.INT); }
-    |  'float' { t = new TypeNode(Type.FLOAT); }
-    |  'char' { t = new TypeNode(Type.CHAR); }
-    |  'string' { t = new TypeNode(Type.STRING); }
-    |  'boolean' { t = new TypeNode(Type.BOOL); }
-    |  'void' { t = new TypeNode(Type.VOID); }
+       type='int' { t = new TypeNode($type.getLine(), Type.INT); }
+    |  type='float' { t = new TypeNode($type.getLine(), Type.FLOAT); }
+    |  type='char' { t = new TypeNode($type.getLine(), Type.CHAR); }
+    |  type='string' { t = new TypeNode($type.getLine(), Type.STRING); }
+    |  type='boolean' { t = new TypeNode($type.getLine(), Type.BOOL); }
+    |  type='void' { t = new TypeNode($type.getLine(), Type.VOID); }
     ;
 
 /* Lexer */

@@ -20,6 +20,6 @@ public class PrintlnStatement extends Statement {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return expr.getLineNum();
     }
 }

@@ -29,7 +29,7 @@ public class Compiler {
 
 		try {
 			Program p = parser.program();
-                        Visitor v = new PrintVisitor();
+                        Visitor v = new TypeCheckVisitor();
                         p.accept(v);
 		}
 		catch (RecognitionException e )	{
