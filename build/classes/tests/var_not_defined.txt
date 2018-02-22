@@ -1,0 +1,3 @@
+void main() {
+	num2 = num1 + 2;
+}

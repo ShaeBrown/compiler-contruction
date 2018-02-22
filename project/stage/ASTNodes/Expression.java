@@ -10,6 +10,6 @@ package ASTNodes;
  * @author shaebrown
  */
 public abstract class Expression extends ASTNode {
-
     public abstract void accept(Visitor v);
+    public abstract TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor);
 }

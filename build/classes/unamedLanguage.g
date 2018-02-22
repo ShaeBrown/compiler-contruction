@@ -181,7 +181,7 @@ compPrime returns [CompareExpression compExpr] :
 	;
 
 addSubExpr returns [AddSubExpression expr]:
-    m=multiExpr a=addSubPrime { expr = new AddSubExpression(m,a);  }
+    m=multiExpr a=addSubPrime { expr = new AddExpression(m,a);  }
     ;
 
 addSubPrime returns [AddSubExpression expr]:
@@ -222,7 +222,7 @@ literal returns [Literal l]:
     ;
 
 identifier returns [Identifier i]:
-    val=ID { i = new Identifier($val.text); }
+    val=ID { i = new Identifier($val.getLine(), $val.text); }
 	;
 
 

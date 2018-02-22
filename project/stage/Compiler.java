@@ -29,8 +29,10 @@ public class Compiler {
 
 		try {
 			Program p = parser.program();
-                        Visitor v = new TypeCheckVisitor();
-                        p.accept(v);
+                        Visitor localGlobals = new LocalGlobalVisitor();
+                        Visitor typeCheck = new TypeCheckVisitor();
+                        p.accept(localGlobals);
+                        p.accept(typeCheck);
 		}
 		catch (RecognitionException e )	{
 			// A lexical or parsing error occured.

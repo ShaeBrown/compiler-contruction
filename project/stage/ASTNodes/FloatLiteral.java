@@ -24,4 +24,9 @@ public class FloatLiteral extends Literal {
     public int getLineNum() {
         return this.lineNum;
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
 }

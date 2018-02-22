@@ -19,4 +19,9 @@ public class AddExpression extends AddSubExpression {
     public void accept(Visitor v) {
         v.visit(this);
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
 }

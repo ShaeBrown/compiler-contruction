@@ -8,7 +8,7 @@ package ASTNodes;
  *
  * @author shaebrown
  */
-public class AddSubExpression extends Expression {
+public abstract class AddSubExpression extends Expression {
     MultiExpression multiExpr;
     AddSubExpression primeExpr;
 
@@ -30,6 +30,5 @@ public class AddSubExpression extends Expression {
     @Override
     public int getLineNum() {
         return this.multiExpr.getLineNum();
-    }
-    
+    }    
 }

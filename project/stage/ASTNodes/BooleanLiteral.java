@@ -26,4 +26,9 @@ public class BooleanLiteral extends Literal {
     public int getLineNum() {
         return lineNum;
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+       return visitor.eval(this);
+    }
 }

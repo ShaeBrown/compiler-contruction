@@ -1,4 +1,4 @@
-// $ANTLR 3.0.1 unamedLanguage.g 2018-02-20 18:10:30
+// $ANTLR 3.0.1 unamedLanguage.g 2018-02-21 18:40:24
 
     import ASTNodes.*;
 
@@ -1867,7 +1867,7 @@ public class unamedLanguageParser extends Parser {
             _fsp--;
             if (failed) return expr;
             if ( backtracking==0 ) {
-               expr = new AddSubExpression(m,a);  
+               expr = new AddExpression(m,a);  
             }
 
             }
@@ -2381,7 +2381,7 @@ public class unamedLanguageParser extends Parser {
             val=(Token)input.LT(1);
             match(input,ID,FOLLOW_ID_in_identifier1406); if (failed) return i;
             if ( backtracking==0 ) {
-               i = new Identifier(val.getText()); 
+               i = new Identifier(val.getLine(), val.getText()); 
             }
 
             }

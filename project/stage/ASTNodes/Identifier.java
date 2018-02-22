@@ -2,16 +2,24 @@ package ASTNodes;
 
 public class Identifier extends Atom {
     String value;
+    int lineNum;
     
-    public Identifier(String value) {
+    public Identifier(int lineNum, String value) {
         this.value = value;
+        this.lineNum = lineNum;
     }
+    
     public void accept(Visitor v) {
         v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.lineNum;
+    }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
     }
 }

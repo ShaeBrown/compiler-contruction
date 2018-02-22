@@ -24,4 +24,9 @@ public class FunctionCallAtom extends Atom {
     public int getLineNum() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
 }

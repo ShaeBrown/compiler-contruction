@@ -26,5 +26,9 @@ public class MultiExpression extends Expression {
     public int getLineNum() {
         return a.getLineNum();
     }
-    
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
 }

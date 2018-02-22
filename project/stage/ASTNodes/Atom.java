@@ -11,4 +11,5 @@ package ASTNodes;
  */
 public abstract class Atom extends ASTNode {    
     public abstract void accept(Visitor v);
+    public abstract TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor);
 }

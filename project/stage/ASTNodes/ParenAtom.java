@@ -25,5 +25,10 @@ public class ParenAtom extends Atom {
     public int getLineNum() {
         return expr.getLineNum();
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
     
 }

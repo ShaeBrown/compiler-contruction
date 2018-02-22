@@ -25,4 +25,9 @@ public class ArrayReference extends Atom {
     public int getLineNum() {
         return i.getLineNum();
     }
+
+    @Override
+    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+        return visitor.eval(this);
+    }
 }
