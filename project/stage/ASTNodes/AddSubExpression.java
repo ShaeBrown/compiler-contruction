@@ -23,11 +23,6 @@ public abstract class AddSubExpression extends Expression {
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.visit(this);
-    }
-
-    @Override
     public int getLineNum() {
         return this.multiExpr.getLineNum();
     }    

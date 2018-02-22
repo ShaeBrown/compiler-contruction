@@ -5,7 +5,6 @@
  */
 package ASTNodes;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -13,21 +12,14 @@ import java.util.HashSet;
  * @author shaebrown
  */
 public class LocalGlobalVisitor implements Visitor {
+
     boolean hasMain = false;
-    HashMap<String, CompoundTypeNode> varName = new HashMap<>();
+    HashSet<String> varName = new HashSet<>();
     HashSet<String> funcNames = new HashSet<>();
     HashSet<String> paramNames = new HashSet<>();
-    
-    @Override
-    public void visit(AddExpression expr) {
-        expr.multiExpr.accept(this);
-        if (expr.primeExpr != null) {
-            expr.primeExpr.accept(this);
-        }
-    }
 
     @Override
-    public void visit(AddSubExpression expr) {
+    public void visit(AddExpression expr) {
         expr.multiExpr.accept(this);
         if (expr.primeExpr != null) {
             expr.primeExpr.accept(this);
@@ -65,12 +57,12 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(BooleanLiteral expr) {
-        
+
     }
 
     @Override
     public void visit(CharLiteral expr) {
-        
+
     }
 
     @Override
@@ -91,7 +83,7 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(EmptyStatement e) {
-        
+
     }
 
     @Override
@@ -99,7 +91,7 @@ public class LocalGlobalVisitor implements Visitor {
         for (Expression e : expr.exprList) {
             e.accept(this);
         }
-}
+    }
 
     @Override
     public void visit(ExpressionStatement expr) {
@@ -108,17 +100,16 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(FloatLiteral expr) {
-        
+
     }
 
     @Override
     public void visit(FormalParameter expr) {
-        System.out.println(expr.id.value);
         if (expr.ct.getType() == Type.VOID) {
-            throw new TypeCheckException(expr.getLineNum(), "No parameter may have a “type” of void.");
+            throw new LocalGlobalException(expr.getLineNum(), "No parameter may have a “type” of void.");
         }
         if (paramNames.contains(expr.id.value)) {
-            throw new TypeCheckException(expr.getLineNum(), "No two parameters of a function may have the same name");
+            throw new LocalGlobalException(expr.getLineNum(), "No two parameters of a function may have the same name");
         }
         paramNames.add(expr.id.value);
     }
@@ -139,7 +130,7 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(FunctionBody expr) {
-        varName = new HashMap<>();
+        varName = new HashSet<>();
         for (VariableDeclaration var : expr.varDecls) {
             var.accept(this);
         }
@@ -150,21 +141,17 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(FunctionDecl expr) {
-        if (expr.id.value.equals("main") && expr.params.params.isEmpty() 
+        if (expr.id.value.equals("main") && expr.params.params.isEmpty()
                 && !expr.ct.isArrayType() && expr.ct.getType() == Type.VOID) {
             hasMain = true;
         }
-        if (funcNames.contains(expr.id.value)) {
-            throw new TypeCheckException(expr.getLineNum(), "No two functions may have the same name");
-        }
-        funcNames.add(expr.id.value);
         expr.params.accept(this);
     }
 
     @Override
     public void visit(Identifier expr) {
-        if (!varName.containsKey(expr.value)) {
-            throw new TypeCheckException(expr.getLineNum(), "Each local variable must be defined before being used.");
+        if (!varName.contains(expr.value) && !paramNames.contains(expr.value) && !funcNames.contains(expr.value)) {
+            throw new LocalGlobalException(expr.getLineNum(), "Each local variable must be defined before being used.");
         }
     }
 
@@ -179,14 +166,14 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(IntegerLiteral expr) {
-        
+
     }
 
     @Override
     public void visit(MultiExpression expr) {
         expr.a.accept(this);
         if (expr.expr != null) {
-            expr.expr.accept(this);  
+            expr.expr.accept(this);
         }
     }
 
@@ -208,26 +195,34 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(Program expr) {
-       if (expr.functionList.isEmpty()){
-           throw new TypeCheckException(expr.getLineNum(), "A program must contain at least one function");
-       }
-       for (Function f : expr.functionList) {
-           f.accept(this);
-       }
-       if (!hasMain) {
-           throw new TypeCheckException(expr.getLineNum(), "One function must be called main, and "
-                   + "must take no parameters, and must have a return “type” of void.");
-       }
+        if (expr.functionList.isEmpty()) {
+            throw new LocalGlobalException(expr.getLineNum(), "A program must contain at least one function");
+        }
+        for (Function f : expr.functionList) {
+            if (funcNames.contains(f.funcDecl.id.value)) {
+                throw new LocalGlobalException(expr.getLineNum(), "No two functions may have the same name");
+            }
+            funcNames.add(f.funcDecl.id.value);
+        }
+        for (Function f : expr.functionList) {
+            f.accept(this);
+        }
+        if (!hasMain) {
+            throw new LocalGlobalException(expr.getLineNum(), "One function must be called main, and "
+                    + "must take no parameters, and must have a return “type” of void.");
+        }
     }
 
     @Override
     public void visit(ReturnStatement expr) {
-        expr.expr.accept(this);
+        if (expr.expr != null) {
+            expr.expr.accept(this);
+        }
     }
 
     @Override
     public void visit(StringLiteral expr) {
-        
+
     }
 
     @Override
@@ -240,21 +235,21 @@ public class LocalGlobalVisitor implements Visitor {
 
     @Override
     public void visit(TypeNode expr) {
-        
+
     }
 
     @Override
-    public void visit(VariableDeclaration expr) throws TypeCheckException {
+    public void visit(VariableDeclaration expr) throws LocalGlobalException {
         if (expr.ct.getType() == Type.VOID) {
-            throw new TypeCheckException(expr.getLineNum(), "No local variable may have a “type” of void.");
+            throw new LocalGlobalException(expr.getLineNum(), "No local variable may have a “type” of void.");
         }
-        if (varName.containsKey(expr.id.value)) {
-            throw new TypeCheckException(expr.getLineNum(), " No two local variables declared in a function may have the same name.");
+        if (varName.contains(expr.id.value)) {
+            throw new LocalGlobalException(expr.getLineNum(), " No two local variables declared in a function may have the same name.");
         }
         if (paramNames.contains(expr.id.value)) {
-            throw new TypeCheckException(expr.getLineNum(), "A local variable may not hide the name of a parameter.");
+            throw new LocalGlobalException(expr.getLineNum(), "A local variable may not hide the name of a parameter.");
         }
-        varName.put(expr.id.value, expr.ct);
+        varName.add(expr.id.value);
     }
 
     @Override
@@ -267,5 +262,5 @@ public class LocalGlobalVisitor implements Visitor {
     public void visit(ParenAtom expr) {
         expr.expr.accept(this);
     }
-    
+
 }

@@ -16,17 +16,15 @@ import java.util.HashSet;
 public class TypeCheckVisitor implements Visitor {
 
     HashMap<String, CompoundTypeNode> varNames = new HashMap<>();
-    HashMap<String, CompoundTypeNode> funcNames = new HashMap<>();
+    HashMap<String, CompoundTypeNode> funcReturns = new HashMap<>();
+    HashMap<String, FormalParameters> funcParams = new HashMap<>();
     CompoundTypeNode returnType;
-    
-    @Override
-    public void visit(AddExpression expr) {
-        eval(expr);   
-    }
+    FormalParameters formalParams;
+    HashMap<String, CompoundTypeNode> paramNames = new HashMap<>();
 
     @Override
-    public void visit(AddSubExpression expr) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void visit(AddExpression expr) {
+        eval(expr);
     }
 
     @Override
@@ -48,12 +46,12 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(ArrayTypeNode expr) {
-        
+
     }
 
     @Override
     public void visit(AssignmentStatement expr) {
-        ComplexType idType = new ComplexType(varNames.get(expr.i.value));
+        ComplexType idType = expr.i.type(this);
         ComplexType exprType = expr.expr.type(this);
         if (!idType.equals(exprType)) {
             throw new TypeCheckException(expr.getLineNum(), "Assignment must be of the same type");
@@ -69,12 +67,12 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(BooleanLiteral expr) {
-        
+
     }
 
     @Override
     public void visit(CharLiteral expr) {
-       
+
     }
 
     @Override
@@ -89,7 +87,7 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(EmptyStatement e) {
-        
+
     }
 
     @Override
@@ -106,17 +104,20 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(FloatLiteral expr) {
-        
+
     }
 
     @Override
     public void visit(FormalParameter expr) {
-        
+         paramNames.put(expr.id.value, expr.ct);
     }
 
     @Override
     public void visit(FormalParameters expr) {
-        
+        paramNames = new HashMap<>();
+        for (FormalParameter param : expr.params) {
+            param.accept(this);
+        }
     }
 
     @Override
@@ -138,12 +139,12 @@ public class TypeCheckVisitor implements Visitor {
     @Override
     public void visit(FunctionDecl expr) {
         returnType = expr.ct;
-        this.funcNames.put(expr.id.value, expr.ct);
+        expr.params.accept(this);
     }
 
     @Override
     public void visit(Identifier expr) {
-        
+
     }
 
     @Override
@@ -160,7 +161,7 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(IntegerLiteral expr) {
-        
+
     }
 
     @Override
@@ -170,8 +171,20 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(FunctionCallAtom expr) {
-        //TODO check params
-        expr.exprs.accept(this);
+        if (!funcParams.containsKey(expr.i.value)) {
+            throw new TypeCheckException(expr.getLineNum(), "Function called before it was defined");
+        }
+        FormalParameters params = funcParams.get(expr.i.value);
+        if (params.params.size() != expr.exprs.exprList.size()) {
+            throw new TypeCheckException(expr.getLineNum(), "Function called without the correct amount of parameters");
+        }
+        for (int i = 0; i < params.params.size(); i++) {
+            ComplexType p1 = new ComplexType(params.params.get(i).ct);
+            ComplexType p2 = expr.exprs.exprList.get(i).type(this);
+            if (!p1.equals(p2)) {
+                throw new TypeCheckException(expr.getLineNum(), "Function called without the correct type of parameters");
+            }
+        }
     }
 
     @Override
@@ -192,23 +205,31 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(Program expr) {
-       for (Function f : expr.functionList) {
-           f.accept(this);
-       }
+        for (Function f : expr.functionList) {
+            funcParams.put(f.funcDecl.id.value, f.funcDecl.params);
+            funcReturns.put(f.funcDecl.id.value, f.funcDecl.ct);
+        }
+        for (Function f : expr.functionList) {
+            f.accept(this);
+        }
     }
 
     @Override
     public void visit(ReturnStatement expr) {
-        ComplexType returns = expr.expr.type(this);
         ComplexType funcReturn = new ComplexType(returnType);
-        if (!funcReturn.equals(returns)) {
+        if (expr.expr != null) {
+            ComplexType returns = expr.expr.type(this);
+            if (!funcReturn.equals(returns)) {
+                throw new TypeCheckException(expr.getLineNum(), "Return statement does not match function declaration return type");
+            }
+        } else if (funcReturn.t != Type.VOID)  {
             throw new TypeCheckException(expr.getLineNum(), "Return statement does not match function declaration return type");
         }
     }
 
     @Override
     public void visit(StringLiteral expr) {
-        
+
     }
 
     @Override
@@ -218,7 +239,7 @@ public class TypeCheckVisitor implements Visitor {
 
     @Override
     public void visit(TypeNode expr) {
-        
+
     }
 
     @Override
@@ -238,8 +259,9 @@ public class TypeCheckVisitor implements Visitor {
     public void visit(ParenAtom expr) {
         expr.expr.type(this);
     }
-    
+
     public ComplexType eval(MultiExpression expr) {
+        expr.a.accept(this);
         ComplexType atom = expr.a.type(this);
         if (expr.expr != null) {
             ComplexType prime = eval(expr.expr);
@@ -253,7 +275,7 @@ public class TypeCheckVisitor implements Visitor {
         }
         return atom;
     }
-    
+
     public ComplexType eval(AddExpression expr) {
         ComplexType multi = eval(expr.multiExpr);
         if (expr.primeExpr != null) {
@@ -268,8 +290,8 @@ public class TypeCheckVisitor implements Visitor {
         }
         return multi;
     }
-    
-    public ComplexType eval(SubExpression expr){
+
+    public ComplexType eval(SubExpression expr) {
         ComplexType multi = eval(expr.multiExpr);
         if (expr.primeExpr != null) {
             ComplexType prime = expr.primeExpr.type(this);
@@ -283,7 +305,7 @@ public class TypeCheckVisitor implements Visitor {
         }
         return multi;
     }
-    
+
     public ComplexType eval(CompareExpression expr) {
         ComplexType addSub = expr.addSubExpr.type(this);
         if (expr.primeExpr != null) {
@@ -298,7 +320,7 @@ public class TypeCheckVisitor implements Visitor {
         }
         return addSub;
     }
-    
+
     public ComplexType eval(EqualsExpression expr) {
         ComplexType compSub = eval(expr.compExpr);
         if (expr.primeExpr != null) {
@@ -313,58 +335,64 @@ public class TypeCheckVisitor implements Visitor {
         }
         return compSub;
     }
-    
+
     public ComplexType eval(BooleanLiteral lit) {
         return new ComplexType(Type.BOOL);
     }
-    
+
     public ComplexType eval(IntegerLiteral lit) {
         return new ComplexType(Type.INT);
     }
-    
+
     public ComplexType eval(FloatLiteral lit) {
         return new ComplexType(Type.FLOAT);
     }
-    
+
     public ComplexType eval(StringLiteral lit) {
         return new ComplexType(Type.STRING);
     }
-    
+
     public ComplexType eval(CharLiteral lit) {
         return new ComplexType(Type.CHAR);
     }
-    
+
     public ComplexType eval(ArrayReference arr) {
         return new ComplexType(varNames.get(arr.i.value));
     }
-    
+
     public ComplexType eval(Identifier i) {
-        return new ComplexType(varNames.get(i.value));
+        if (varNames.containsKey(i.value)) {
+            return new ComplexType(varNames.get(i.value));
+        } else {
+            return new ComplexType(paramNames.get(i.value));
+        }
     }
-    
+
     public ComplexType eval(FunctionCallAtom fc) {
-        return new ComplexType(funcNames.get(fc.i.value));
+        return new ComplexType(funcReturns.get(fc.i.value));
     }
-    
+
     public ComplexType eval(ParenAtom pa) {
         return pa.expr.type(this);
     }
-    
+
     public class ComplexType {
+
         boolean isArray;
         int size;
         Type t;
+
         public ComplexType(Type t) {
             this.t = t;
             this.isArray = false;
         }
-        
+
         public ComplexType(Type t, int size) {
             this.t = t;
             this.size = size;
             this.isArray = true;
         }
-        
+
         public ComplexType(CompoundTypeNode node) {
             if (node.isArrayType()) {
                 this.isArray = true;
@@ -372,7 +400,7 @@ public class TypeCheckVisitor implements Visitor {
             }
             this.t = node.getType();
         }
-        
+
         public boolean equals(ComplexType type) {
             if (t != type.t) {
                 return false;
@@ -384,26 +412,26 @@ public class TypeCheckVisitor implements Visitor {
             }
             return true;
         }
-        
+
         public boolean isAddType() {
-            return !isArray && 
-                    (t == Type.STRING || t == Type.CHAR || t == Type.FLOAT || t == Type.INT);
+            return !isArray
+                    && (t == Type.STRING || t == Type.CHAR || t == Type.FLOAT || t == Type.INT);
         }
-        
+
         public boolean isMultType() {
-            return !isArray && 
-                    (t == Type.FLOAT || t == Type.INT);
+            return !isArray
+                    && (t == Type.FLOAT || t == Type.INT);
         }
-        
+
         public boolean isCompareType() {
             return !isArray && t != Type.VOID;
         }
-        
+
         public boolean isSubType() {
-            return !isArray && 
-                    (t == Type.CHAR || t == Type.FLOAT || t == Type.INT);
+            return !isArray
+                    && (t == Type.CHAR || t == Type.FLOAT || t == Type.INT);
         }
-        
+
         public boolean isEqualsType() {
             return isCompareType();
         }

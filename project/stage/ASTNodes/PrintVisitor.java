@@ -315,14 +315,6 @@ public class PrintVisitor implements Visitor {
     }
 
     @Override
-    public void visit(AddSubExpression expr) {
-        expr.multiExpr.accept(this);
-        if (expr.primeExpr != null) {
-            expr.primeExpr.accept(this);
-        }
-    }
-
-    @Override
     public void visit(ParenAtom expr) {
         System.out.print("(");
         expr.expr.accept(this);

@@ -33,16 +33,14 @@ public class Compiler {
                         Visitor typeCheck = new TypeCheckVisitor();
                         p.accept(localGlobals);
                         p.accept(typeCheck);
+                        System.out.println("Existence, Uniqueness and Type Checking Successful");
 		}
 		catch (RecognitionException e )	{
-			// A lexical or parsing error occured.
-			// ANTLR will have already printed information on the
-			// console due to code added to the grammar.  So there is
-			// nothing to do here.
+                    System.out.println(e.getLocalizedMessage());
 		}
 		catch (Exception e) {
-			System.out.println(e);
-			e.printStackTrace();
+                    System.out.println(e);
+                    e.printStackTrace();
 		}
 	}
 }

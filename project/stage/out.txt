@@ -1,0 +1,30 @@
+null
+ASTNodes.LocalGlobalException: Line 0:  One function must be called main, and must take no parameters, and must have a return “type” of void.
+ASTNodes.LocalGlobalException: Line 0:  One function must be called main, and must take no parameters, and must have a return “type” of void.
+ASTNodes.LocalGlobalException: Line 0:  No two functions may have the same name
+Existence, Uniqueness and Type Checking Successful
+ASTNodes.LocalGlobalException: Line 5:  No two parameters of a function may have the same name
+ASTNodes.LocalGlobalException: Line 7:   No two local variables declared in a function may have the same name.
+ASTNodes.LocalGlobalException: Line 5:  No parameter may have a “type” of void.
+ASTNodes.LocalGlobalException: Line 6:  No local variable may have a “type” of void.
+Existence, Uniqueness and Type Checking Successful
+ASTNodes.LocalGlobalException: Line 6:  A local variable may not hide the name of a parameter.
+ASTNodes.LocalGlobalException: Line 6:  Each local variable must be defined before being used.
+Existence, Uniqueness and Type Checking Successful
+null
+null
+ASTNodes.TypeCheckException: Line 2: Add must be used on two of the same types
+ASTNodes.TypeCheckException: Line 2: Add must be used on two of the same types
+ASTNodes.TypeCheckException: Line 8: Return statement does not match function declaration return type
+ASTNodes.TypeCheckException: Line 4: Assignment must be of the same type
+---ASTNodes.TypeCheckException: Line 23: Assignment must be of the same type
+null
+ASTNodes.TypeCheckException: Line 5: Add must be used on two of the same types
+ASTNodes.TypeCheckException: Line 11: Add must be used on two of the same types
+ASTNodes.TypeCheckException: Line 6: Multiply must be used on integer or float types
+ASTNodes.TypeCheckException: Line 6: Comparison must be used on two of the same types
+ASTNodes.TypeCheckException: Line 6: Equals must be used on two of the same types
+--null
+ASTNodes.TypeCheckException: Line 2: Function called without the correct amount of parameters
+ASTNodes.TypeCheckException: Line 4: Function called without the correct type of parameters
+ASTNodes.TypeCheckException: Line 6: Function called without the correct type of parameters

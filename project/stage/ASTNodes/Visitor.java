@@ -11,7 +11,6 @@ package ASTNodes;
  */
 public interface Visitor {
     public void visit(AddExpression expr);
-    public void visit(AddSubExpression expr);
     public void visit(ArrayAssignmentStatement expr);
     public void visit(ArrayReference expr);
     public void visit(ArrayTypeNode expr);
