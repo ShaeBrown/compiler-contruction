@@ -3,9 +3,13 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 public class ArrayTypeNode extends CompoundTypeNode {
-    TypeNode t;
-    int size;
+    public TypeNode t;
+    public int size;
     
     public ArrayTypeNode(TypeNode t, int size) {
         this.t = t;
@@ -23,5 +27,15 @@ public class ArrayTypeNode extends CompoundTypeNode {
     @Override
     public int getLineNum() {
         return t.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return t.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 }

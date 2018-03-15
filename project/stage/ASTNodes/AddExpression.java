@@ -5,6 +5,12 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.ComplexType;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
@@ -21,7 +27,17 @@ public class AddExpression extends AddSubExpression {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return this.multiExpr.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 }

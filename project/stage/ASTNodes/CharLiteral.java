@@ -5,18 +5,25 @@
  */
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public class CharLiteral extends Literal {
-    char c;
+    public char c;
     int lineNum;
-    public CharLiteral(int lineNum, char c) {
+    int pos;
+    public CharLiteral(int lineNum, int pos, char c) {
         this.lineNum = lineNum;
         this.c = c;
+        this.pos = pos;
     }
     
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -27,7 +34,12 @@ public class CharLiteral extends Literal {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return this.pos;
     }
 }

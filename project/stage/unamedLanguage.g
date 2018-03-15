@@ -99,7 +99,7 @@ statement returns [Statement st] options {backtrack = true;}:
 	| rStmt=returnStatement { st = rStmt; }
 	| assStmt=assignmentStatement { st = assStmt; }
 	| arrStmt=arrayAssignmentStatement { st = arrStmt; }
-	| ';' { st = new EmptyStatement(); }
+	| cl=';' { st = new EmptyStatement($cl.getLine(), $cl.getCharPositionInLine()); }
   ;
   
 arrayAssignmentStatement returns [ArrayAssignmentStatement arrstmt]:
@@ -133,8 +133,8 @@ printlnStatement returns [PrintlnStatement p]:
     ;
 
 returnStatement returns [ReturnStatement r]:
-        'return' e=expr? ';'
-        { r = new ReturnStatement(e); }
+        st = 'return' ';' { r = new ReturnStatement($st.getLine(), $st.getCharPositionInLine()); }
+        | 'return' e=expr ';' { r = new ReturnStatement(e); }
     ;
     
 exprStatement returns [ExpressionStatement s]:
@@ -213,26 +213,26 @@ exprMore returns [Expression expr]:
 
 
 literal returns [Literal l]: 
-    i=INT { l = new IntegerLiteral($i.getLine(), Integer.parseInt($i.text)); }
-    | s=STRING { l = new StringLiteral($s.getLine(), $s.text.substring(1, $s.text.length()-1)); }
-    | c=CHAR { l = new CharLiteral($c.getLine(), $c.text.charAt(1)); }
-    | f=FLOAT { l = new FloatLiteral($f.getLine(), Float.parseFloat($f.text)); }
-    | b='true' { l = new BooleanLiteral($b.getLine(), true); }
-    | b='false' { l = new BooleanLiteral($b.getLine(), false); }
+    i=INT { l = new IntegerLiteral($i.getLine(), $i.getCharPositionInLine(), Integer.parseInt($i.text)); }
+    | s=STRING { l = new StringLiteral($s.getLine(), $s.getCharPositionInLine(), $s.text.substring(1, $s.text.length()-1)); }
+    | c=CHAR { l = new CharLiteral($c.getLine(), $c.getCharPositionInLine(), $c.text.charAt(1)); }
+    | f=FLOAT { l = new FloatLiteral($f.getLine(), $f.getCharPositionInLine(), Float.parseFloat($f.text)); }
+    | b='true' { l = new BooleanLiteral($b.getLine(), $b.getCharPositionInLine(), true); }
+    | b='false' { l = new BooleanLiteral($b.getLine(), $b.getCharPositionInLine(), false); }
     ;
 
 identifier returns [Identifier i]:
-    val=ID { i = new Identifier($val.getLine(), $val.text); }
+    val=ID { i = new Identifier($val.getLine(), $val.getCharPositionInLine(), $val.text); }
 	;
 
 
 type returns [TypeNode t]:
-       type='int' { t = new TypeNode($type.getLine(), Type.INT); }
-    |  type='float' { t = new TypeNode($type.getLine(), Type.FLOAT); }
-    |  type='char' { t = new TypeNode($type.getLine(), Type.CHAR); }
-    |  type='string' { t = new TypeNode($type.getLine(), Type.STRING); }
-    |  type='boolean' { t = new TypeNode($type.getLine(), Type.BOOL); }
-    |  type='void' { t = new TypeNode($type.getLine(), Type.VOID); }
+       i='int' { t = new TypeNode($i.getLine(), $i.getCharPositionInLine(), Type.INT); }
+    |  f='float' { t = new TypeNode($f.getLine(), $f.getCharPositionInLine(), Type.FLOAT); }
+    |  c='char' { t = new TypeNode($c.getLine(), $c.getCharPositionInLine(), Type.CHAR); }
+    |  s='string' { t = new TypeNode($s.getLine(), $s.getCharPositionInLine(), Type.STRING); }
+    |  b='boolean' { t = new TypeNode($b.getLine(), $b.getCharPositionInLine(), Type.BOOL); }
+    |  v='void' { t = new TypeNode($v.getLine(), $v.getCharPositionInLine(), Type.VOID); }
     ;
 
 /* Lexer */

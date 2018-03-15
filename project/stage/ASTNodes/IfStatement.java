@@ -5,14 +5,18 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class IfStatement extends Statement{
-    Expression ifExpr;
-    Block thenBlock;
-    Block elseBlock;
+    public Expression ifExpr;
+    public Block thenBlock;
+    public Block elseBlock;
     
     public IfStatement(Expression ifExpr, Block thenBlock) {
         this.ifExpr = ifExpr;
@@ -25,6 +29,7 @@ public class IfStatement extends Statement{
         this.elseBlock = elseBlock;
     }
     
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -32,5 +37,15 @@ public class IfStatement extends Statement{
     @Override
     public int getLineNum() {
         return ifExpr.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return ifExpr.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 }

@@ -1,7 +1,0 @@
-void main() {
-	;
-}
-
-void main(int num) {
-	;
-}

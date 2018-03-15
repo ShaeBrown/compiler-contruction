@@ -1,12 +1,20 @@
 package ASTNodes;
 
-public class Function  extends ASTNode{
-    FunctionDecl funcDecl;
-    FunctionBody funcBody;
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
+public class Function  extends ASTNode {
+    public FunctionDecl funcDecl;
+    public FunctionBody funcBody;
     
     public Function(FunctionDecl decl, FunctionBody body) {
         this.funcDecl = decl;
         this.funcBody = body;
+    }
+    
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
     
     public void accept(Visitor v) {
@@ -15,6 +23,11 @@ public class Function  extends ASTNode{
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return funcDecl.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return funcDecl.getPos();
     }
 }

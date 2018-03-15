@@ -1,14 +1,21 @@
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 public class Identifier extends Atom {
-    String value;
+    public String value;
     int lineNum;
+    int pos;
     
-    public Identifier(int lineNum, String value) {
+    public Identifier(int lineNum, int pos, String value) {
         this.value = value;
         this.lineNum = lineNum;
+        this.pos = pos;
     }
     
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -19,7 +26,12 @@ public class Identifier extends Atom {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return this.pos;
     }
 }

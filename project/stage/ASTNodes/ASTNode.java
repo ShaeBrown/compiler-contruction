@@ -11,4 +11,5 @@ package ASTNodes;
  */
 public abstract class ASTNode {
     public abstract int getLineNum();
+    public abstract int getPos();
 }

@@ -5,19 +5,26 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.ComplexType;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public class CompareExpression extends Expression {
-    AddSubExpression addSubExpr;
-    CompareExpression primeExpr;
+    public AddSubExpression addSubExpr;
+    public CompareExpression primeExpr;
 
     public CompareExpression(AddSubExpression addSubExpr, CompareExpression primeExpr) {
         this.addSubExpr = addSubExpr;
         this.primeExpr = primeExpr;
     }
     
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -28,7 +35,17 @@ public class CompareExpression extends Expression {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
        return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return this.addSubExpr.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 }

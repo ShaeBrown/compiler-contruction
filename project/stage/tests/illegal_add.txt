@@ -1,8 +1,0 @@
-void main() {
-	int a;
-	string c;
-	5 + 5.0;
-	true + false;
-	a + c;
-	'c' + "String";
-}

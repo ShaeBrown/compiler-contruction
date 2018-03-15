@@ -5,15 +5,21 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class PrintlnStatement extends Statement {
-    Expression expr;
+    public Expression expr;
     public PrintlnStatement(Expression e) {
         this.expr = e;
     }
+    
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -21,5 +27,15 @@ public class PrintlnStatement extends Statement {
     @Override
     public int getLineNum() {
         return expr.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return expr.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 }

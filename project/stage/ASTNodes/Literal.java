@@ -5,6 +5,8 @@
  */
 package ASTNodes;
 
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown

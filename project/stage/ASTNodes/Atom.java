@@ -5,11 +5,15 @@
  */
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public abstract class Atom extends ASTNode {    
     public abstract void accept(Visitor v);
-    public abstract TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor);
+    public abstract ComplexType type(TypeCheckVisitor visitor);
 }

@@ -5,6 +5,9 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,7 @@ import java.util.List;
  * @author shaebrown
  */
 public class FormalParameters extends ASTNode {
-    List<FormalParameter> params;
+    public List<FormalParameter> params;
 
     public FormalParameters() {
         params = new ArrayList<>();
@@ -22,13 +25,29 @@ public class FormalParameters extends ASTNode {
     public void addParam(FormalParameter p) {
         this.params.add(p);
     }
+    
     public void accept(Visitor v) {
         v.visit(this);
+    }
+    
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!params.isEmpty()) {
+            return params.get(0).getLineNum();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getPos() {
+        if (!params.isEmpty()) {
+            return params.get(0).getPos();
+        }
+        return 0;
     }
     
 }

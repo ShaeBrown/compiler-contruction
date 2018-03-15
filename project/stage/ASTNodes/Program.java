@@ -1,10 +1,12 @@
 package ASTNodes;
 
+import Visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Program extends ASTNode {
     public List<Function> functionList;
+    public String programName = "temp";
     public Program () {
         functionList = new ArrayList<>();
     }
@@ -23,6 +25,11 @@ public class Program extends ASTNode {
 
     @Override
     public int getLineNum() {
+        return 0;
+    }
+
+    @Override
+    public int getPos() {
         return 0;
     }
 }

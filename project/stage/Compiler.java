@@ -5,6 +5,9 @@
  *
  */
 
+import Visitors.Visitor;
+import Visitors.LocalGlobalVisitor;
+import Visitors.TypeCheckVisitor;
 import ASTNodes.*;
 import org.antlr.runtime.*;
 import java.io.*;

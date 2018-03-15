@@ -5,12 +5,23 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class EmptyStatement extends Statement {
+    int lineNum;
+    int pos;
 
+    public EmptyStatement(int lineNum, int pos) {
+        this.lineNum = lineNum;
+        this.pos = pos;
+    }
+    
     @Override
     public void accept(Visitor v) {
         v.visit(this);
@@ -18,7 +29,17 @@ public class EmptyStatement extends Statement {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.lineNum;
+    }
+
+    @Override
+    public int getPos() {
+        return this.pos;
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
     
 }

@@ -1,7 +1,0 @@
-void main() {
-	;
-}
-
-void func(int num) {
-	int num;
-}

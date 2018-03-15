@@ -5,6 +5,7 @@
  */
 package ASTNodes;
 
+import Visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author shaebrown
  */
 public class ExpressionList extends ASTNode {
-    List<Expression> exprList;
+    public List<Expression> exprList;
     public ExpressionList() {
         exprList = new ArrayList<>();
     }
@@ -26,6 +27,19 @@ public class ExpressionList extends ASTNode {
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (!exprList.isEmpty()) {
+            return exprList.get(0).getLineNum();
+        }
+        //No expressions = no possible errors
+        return 0;
+    }
+
+    @Override
+    public int getPos() {
+        if (!exprList.isEmpty()) {
+            return exprList.get(0).getPos();
+        }
+        //No expressions = no possible errors
+        return 0;
     }
 }

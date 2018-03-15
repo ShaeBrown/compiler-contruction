@@ -5,12 +5,16 @@
  */
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public class ParenAtom extends Atom {
-    Expression expr;
+    public Expression expr;
     
     public ParenAtom(Expression expr) {
         this.expr = expr;
@@ -27,8 +31,13 @@ public class ParenAtom extends Atom {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return expr.getPos();
     }
     
 }

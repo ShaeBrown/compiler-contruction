@@ -5,17 +5,23 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class AssignmentStatement extends Statement {
-    Identifier i;
-    Expression expr;
+    public Identifier i;
+    public Expression expr;
     public AssignmentStatement(Identifier i, Expression e) {
         this.i = i;
         this.expr = e;
     }
+    
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -23,6 +29,16 @@ public class AssignmentStatement extends Statement {
     @Override
     public int getLineNum() {
         return i.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return i.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
     
 }

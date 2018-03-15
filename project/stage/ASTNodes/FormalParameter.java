@@ -5,13 +5,16 @@
  */
 package ASTNodes;
 
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class FormalParameter extends ASTNode {
-    CompoundTypeNode ct;
-    Identifier id;
+    public CompoundTypeNode ct;
+    public Identifier id;
+    
     public FormalParameter(CompoundTypeNode ct, Identifier id) {
         this.ct = ct;
         this.id = id;
@@ -23,7 +26,11 @@ public class FormalParameter extends ASTNode {
 
     @Override
     public int getLineNum() {
-        
         return ct.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return ct.getPos();
     }
 }

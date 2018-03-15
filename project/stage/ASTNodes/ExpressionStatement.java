@@ -5,24 +5,39 @@
  */
 package ASTNodes;
 
+import IR.IR;
+import Visitors.IRVisitor;
+import Visitors.Visitor;
+
 /**
  *
  * @author shaebrown
  */
 public class ExpressionStatement extends Statement{
-    Expression e;
+    public Expression e;
 
     public ExpressionStatement(Expression e) {
         this.e = e;
     }
     
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return e.getLineNum();
+    }
+
+    @Override
+    public int getPos() {
+        return e.getPos();
+    }
+
+    @Override
+    public IR accept(IRVisitor v) {
+        return v.visit(this);
     }
     
 }

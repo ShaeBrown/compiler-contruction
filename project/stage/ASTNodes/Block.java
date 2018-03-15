@@ -5,6 +5,7 @@
  */
 package ASTNodes;
 
+import Visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,20 +15,36 @@ import java.util.List;
  */
 
 public class Block extends ASTNode {
-    List<Statement> statements;
+    public List<Statement> statements;
     public Block() {
         this.statements = new ArrayList<>();
     }
+    
     public void addStatement(Statement s) {
         this.statements.add(s);
     }
+    
     public void accept(Visitor v) {
         v.visit(this);
     }
 
     @Override
     public int getLineNum() {
-        // Empty block: TODO
-        return statements.get(0).getLineNum();
+        if (!statements.isEmpty()) {
+           return statements.get(0).getLineNum();
+        } else {
+            // No statments = no possible errors
+            return 0;
+        }
+    }
+
+    @Override
+    public int getPos() {
+        if (!statements.isEmpty()) {
+            return statements.get(0).getLineNum();
+        } else {
+            // No statments = no possible errors
+            return 0;
+        }
     }
 }

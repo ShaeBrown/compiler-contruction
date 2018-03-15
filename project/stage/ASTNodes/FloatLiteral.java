@@ -5,17 +5,25 @@
  */
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public class FloatLiteral extends Literal {
-    float f;
+    public float f;
     int lineNum;
-    public FloatLiteral(int lineNum, float f) {
+    int pos;
+    public FloatLiteral(int lineNum, int pos, float f) {
         this.lineNum = lineNum;
         this.f = f;
+        this.pos = pos;
     }
+    
+    @Override
     public void accept(Visitor v) {
         v.visit(this);
     }
@@ -26,7 +34,12 @@ public class FloatLiteral extends Literal {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return this.pos;
     }
 }

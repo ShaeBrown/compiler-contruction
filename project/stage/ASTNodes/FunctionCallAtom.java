@@ -5,13 +5,18 @@
  */
 package ASTNodes;
 
+import Visitors.ComplexType;
+import Visitors.Visitor;
+import Visitors.TypeCheckVisitor;
+
 /**
  *
  * @author shaebrown
  */
 public class FunctionCallAtom extends Atom {
-    Identifier i;
-    ExpressionList exprs;
+    public Identifier i;
+    public ExpressionList exprs;
+    
     public FunctionCallAtom(Identifier i, ExpressionList exprList) {
         this.i = i;
         this.exprs = exprList;
@@ -26,7 +31,12 @@ public class FunctionCallAtom extends Atom {
     }
 
     @Override
-    public TypeCheckVisitor.ComplexType type(TypeCheckVisitor visitor) {
+    public ComplexType type(TypeCheckVisitor visitor) {
         return visitor.eval(this);
+    }
+
+    @Override
+    public int getPos() {
+        return i.getPos();
     }
 }
